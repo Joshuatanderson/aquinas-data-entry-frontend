@@ -2,7 +2,8 @@ import { Button, Container, FormControl, FormLabel, Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import React, { useState, useEffect } from "react";
-import { requiredFields, Validator } from "../data/requiredFields";
+import { requiredFields } from "../data/requiredFields";
+import { Validator } from "../util/validate";
 import { theme } from "../theme";
 import InputField from "./InputField";
 export interface Field {
@@ -79,7 +80,7 @@ const InputForm = () => {
 
 	return (
 		<Container className={classes.cont}>
-			<Grid container spacing={3}>
+			<Grid container>
 				<Grid item xs={12}>
 					<form onSubmit={handleSubmit} className={classes.form}>
 						<FormLabel className={classes.label}>Fields</FormLabel>

@@ -1,15 +1,4 @@
-export interface Validator {
-	matcher: (input: string) => boolean;
-	message: string;
-}
-
-const validate = (validators: Validator[]) => (input: string) => {
-	let result: string | undefined;
-	validators.forEach((validator) => {
-		result = validator.matcher(input) ? result : validator.message;
-	});
-	return result;
-};
+import { validate } from "../util/validate";
 
 export const requiredFields = [
 	{
