@@ -2,7 +2,7 @@ import { TextField } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useEffect, useState } from "react";
 import { theme } from "../theme";
-import { Field, FieldValue } from "./InputForm";
+import { Field, FieldValue } from "./form/InputForm";
 
 interface InputFieldProps {
 	field: Field;

@@ -1,10 +1,11 @@
 import { Button, Container, FormLabel, Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React, { useState, useEffect } from "react";
-import { requiredFields } from "../data/requiredFields";
-import { Validator } from "../util/validate";
-import { theme } from "../theme";
-import InputField from "./InputField";
+import { requiredFields } from "../../data/requiredFields";
+import { Validator } from "../../util/validate";
+import { theme } from "../../theme";
+import InputField from "../InputField";
+import AddOptionalField from "./AddOptionalField";
 export interface Field {
 	code: string;
 	name: string;
@@ -36,6 +37,7 @@ const InputForm = () => {
 	const [showErrors, setShowErrors] = useState(false);
 	const [formSubmissionValue, setFormSubmissionValue] =
 		useState<Record<string, FieldValue>>();
+	const [activeFields, setActiveFields] = useState(requiredFields);
 
 	useEffect(() => {
 		if (
@@ -49,6 +51,8 @@ const InputForm = () => {
 			return;
 		}
 		// submit to server
+		// clear values
+		// show success indicator
 	}, [formSubmissionValue]);
 
 	const classes = useStyles();
@@ -59,8 +63,12 @@ const InputForm = () => {
 		setShowErrors(false);
 	};
 
+	const handleAddActiveField = (field: Field) => {
+		setActiveFields((prevState) => [...prevState, field]);
+	};
+
 	const makeFields = () => {
-		return requiredFields.map((field: Field, index) => (
+		return activeFields.map((field: Field, index) => (
 			<Grid item xs={12} sm={6} key={`${field.name}${index}`}>
 				<InputField
 					field={field}
@@ -79,19 +87,14 @@ const InputForm = () => {
 
 	return (
 		<Container className={classes.cont}>
-			<Grid container>
-				<Grid item xs={12}>
-					<form onSubmit={handleSubmit} className={classes.form}>
-						<FormLabel className={classes.label}>Fields</FormLabel>
-						<Grid container spacing={1}>
-							{makeFields()}
-						</Grid>
-						<Button variant="outlined" type="submit">
-							Submit
-						</Button>
-					</form>
-				</Grid>
-			</Grid>
+			<form onSubmit={handleSubmit} className={classes.form}>
+				<FormLabel className={classes.label}>Fields</FormLabel>
+				<Grid container>{makeFields()}</Grid>
+				<Button variant="outlined" type="submit">
+					Submit
+				</Button>
+			</form>
+			<AddOptionalField addActiveField={handleAddActiveField} />
 		</Container>
 	);
 };

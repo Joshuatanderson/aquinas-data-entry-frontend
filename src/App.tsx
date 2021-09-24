@@ -3,7 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import { AppBar, CssBaseline } from "@mui/material";
 import Header from "./components/Header";
-import InputForm from "./components/InputForm";
+import InputForm from "./components/form/InputForm";
 
 function App() {
 	return (

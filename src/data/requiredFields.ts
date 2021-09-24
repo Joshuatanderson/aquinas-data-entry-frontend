@@ -1,6 +1,7 @@
+import { Field } from "../components/form/InputForm";
 import { validate } from "../util/validate";
 
-export const requiredFields = [
+export const requiredFields: Field[] = [
 	{
 		code: "Bible book",
 		name: "Bible Book",
