@@ -44,7 +44,7 @@ export const requiredFields = [
 		name: "Bible Chapter",
 		validators: [
 			{
-				matcher: (input: string) => !!input.match(/^[a-zA-Z0-9 ]*$/),
+				matcher: (input: string) => !!input.match(/^[/d ]*$/),
 				message: "Not a valid name.",
 			},
 		],
@@ -66,7 +66,7 @@ export const requiredFields = [
 		name: "Bible Verse",
 		validators: [
 			{
-				matcher: (input: string) => !!input.match(/^[a-zA-Z0-9 ]*$/),
+				matcher: (input: string) => !!input.match(/^[/d ]*$/),
 				message: "Not a valid name.",
 			},
 		],
