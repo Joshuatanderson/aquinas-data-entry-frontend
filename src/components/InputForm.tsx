@@ -1,10 +1,4 @@
-import {
-	Button,
-	FormControl,
-	FormHelperText,
-	FormLabel,
-	inputAdornmentClasses,
-} from "@mui/material";
+import { Button, Container, FormControl, FormLabel, Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import React, { useState, useEffect } from "react";
@@ -28,6 +22,12 @@ export interface FieldValue {
 const useStyles = makeStyles({
 	label: {
 		marginBottom: theme.spacing(3),
+	},
+	cont: {
+		marginTop: theme.spacing(3),
+	},
+	form: {
+		width: "100%",
 	},
 });
 
@@ -61,30 +61,38 @@ const InputForm = () => {
 
 	const makeFields = () => {
 		return requiredFields.map((field: Field, index) => (
-			<InputField
-				key={`${field.name}${index}`}
-				field={field}
-				isPendingSubmission={isSubmitting}
-				showError={showErrors}
-				submitDataCallback={(fieldValue: FieldValue) => {
-					setFormSubmissionValue((prevState) => ({
-						...prevState,
-						[field.code]: fieldValue,
-					}));
-					console.log(formSubmissionValue);
-				}}
-			/>
+			<Grid item xs={12} sm={6} key={`${field.name}${index}`}>
+				<InputField
+					field={field}
+					isPendingSubmission={isSubmitting}
+					showError={showErrors}
+					submitDataCallback={(fieldValue: FieldValue) => {
+						setFormSubmissionValue((prevState) => ({
+							...prevState,
+							[field.code]: fieldValue,
+						}));
+					}}
+				/>
+			</Grid>
 		));
 	};
 
 	return (
-		<form onSubmit={handleSubmit}>
-			<FormLabel className={classes.label}>Fields</FormLabel>
-			{makeFields()}
-			<Button variant="outlined" type="submit">
-				Submit
-			</Button>
-		</form>
+		<Container className={classes.cont}>
+			<Grid container spacing={3}>
+				<Grid item xs={12}>
+					<form onSubmit={handleSubmit} className={classes.form}>
+						<FormLabel className={classes.label}>Fields</FormLabel>
+						<Grid container spacing={1}>
+							{makeFields()}
+						</Grid>
+						<Button variant="outlined" type="submit">
+							Submit
+						</Button>
+					</form>
+				</Grid>
+			</Grid>
+		</Container>
 	);
 };
 
