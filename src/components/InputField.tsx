@@ -1,5 +1,7 @@
-import { Input, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import { useState } from "react";
+import { theme } from "../theme";
 import { Field, FieldValue } from "./InputForm";
 
 interface InputFieldProps {
@@ -9,6 +11,12 @@ interface InputFieldProps {
 	showError: boolean;
 }
 
+const useStyles = makeStyles({
+	field: {
+		marginBottom: theme.spacing(3),
+	},
+});
+
 const InputField = ({
 	field,
 	onSubmit,
@@ -16,6 +24,8 @@ const InputField = ({
 	showError,
 }: InputFieldProps) => {
 	const [value, setValue] = useState("");
+
+	const classes = useStyles({});
 
 	const handleSubmit = () => {
 		onSubmit({
@@ -34,6 +44,7 @@ const InputField = ({
 			error={showError && field.validator(value)}
 			onChange={(e) => setValue(e.target.value)}
 			onSubmit={handleSubmit}
+			className={classes.field}
 		></TextField>
 	);
 };
