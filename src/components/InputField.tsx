@@ -1,12 +1,12 @@
 import { TextField } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { theme } from "../theme";
 import { Field, FieldValue } from "./InputForm";
 
 interface InputFieldProps {
 	field: Field;
-	onSubmit: (currentValue: FieldValue) => void;
+	submitDataCallback: (currentValue: FieldValue) => void;
 	isPendingSubmission: boolean;
 	showError: boolean;
 }
@@ -19,21 +19,28 @@ const useStyles = makeStyles({
 
 const InputField = ({
 	field,
-	onSubmit,
+	submitDataCallback,
 	isPendingSubmission,
 	showError,
 }: InputFieldProps) => {
 	const [value, setValue] = useState("");
 
+	useEffect(() => {
+		if (!isPendingSubmission) {
+			return;
+		}
+		handleSubmit();
+	}, [isPendingSubmission]);
+
 	const classes = useStyles({});
 
-	const handleSubmit = () => {
-		onSubmit({
+	function handleSubmit() {
+		submitDataCallback({
 			code: field.code,
 			name: field.name,
 			value: value,
 		});
-	};
+	}
 
 	return (
 		<TextField
@@ -41,9 +48,8 @@ const InputField = ({
 			variant="outlined"
 			label={field.name}
 			value={value}
-			error={showError && field.validator(value)}
+			error={showError && !!field.validate(field.validators)(value)}
 			onChange={(e) => setValue(e.target.value)}
-			onSubmit={handleSubmit}
 			className={classes.field}
 		></TextField>
 	);

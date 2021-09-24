@@ -6,14 +6,16 @@ import {
 	inputAdornmentClasses,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import { Box } from "@mui/system";
 import React, { useState } from "react";
-import { requiredFields } from "../data/requiredFields";
+import { requiredFields, Validator } from "../data/requiredFields";
 import { theme } from "../theme";
 import InputField from "./InputField";
 export interface Field {
 	code: string;
 	name: string;
-	validator: (input: string) => boolean;
+	validators: Validator[];
+	validate: (validators: Validator[]) => (input: string) => string | undefined;
 }
 
 export interface FieldValue {
@@ -31,39 +33,43 @@ const useStyles = makeStyles({
 const InputForm = () => {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [showErrors, setShowErrors] = useState(false);
-	const [formSubmissionValue, setFormSubmissionValue] = useState({});
+	const [formSubmissionValue, setFormSubmissionValue] =
+		useState<Record<string, FieldValue>>();
 
 	const classes = useStyles();
 
-	const handleSubmit = () => {
+	const handleSubmit = (e: React.FormEvent) => {
+		e.preventDefault();
 		setIsSubmitting(true);
 		setShowErrors(false);
 	};
 
 	const makeFields = () => {
-		return requiredFields.map((field: Field) => (
+		return requiredFields.map((field: Field, index) => (
 			<InputField
+				key={`${field.name}${index}`}
 				field={field}
 				isPendingSubmission={isSubmitting}
 				showError={showErrors}
-				onSubmit={(fieldValue: FieldValue) => {
-					setFormSubmissionValue({
-						...formSubmissionValue,
+				submitDataCallback={(fieldValue: FieldValue) => {
+					setFormSubmissionValue((prevState) => ({
+						...prevState,
 						[field.code]: fieldValue,
-					});
+					}));
+					console.log(formSubmissionValue);
 				}}
 			/>
 		));
 	};
 
 	return (
-		<FormControl>
+		<form onSubmit={handleSubmit}>
 			<FormLabel className={classes.label}>Fields</FormLabel>
 			{makeFields()}
-			<Button variant="outlined" type="submit" onSubmit={handleSubmit}>
+			<Button variant="outlined" type="submit">
 				Submit
 			</Button>
-		</FormControl>
+		</form>
 	);
 };
 

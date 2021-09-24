@@ -1,27 +1,75 @@
+export interface Validator {
+	matcher: (input: string) => boolean;
+	message: string;
+}
+
+const validate = (validators: Validator[]) => (input: string) => {
+	let result: string | undefined;
+	validators.forEach((validator) => {
+		result =
+			result === undefined
+				? result
+				: validator.matcher(input)
+				? result
+				: validator.message;
+	});
+	return result;
+};
+
 export const requiredFields = [
 	{
 		code: "Location 1",
 		name: "Location 1",
-		validator: (input: string) => !!input.match(/^[a-zA-Z0-9 ]*$/),
+		validators: [
+			{
+				matcher: (input: string) => !!input.match(/^[a-zA-Z0-9 ]*$/),
+				message: "Not a valid name.",
+			},
+		],
+		validate,
 	},
 	{
 		code: "Bible book",
 		name: "Bible Book",
-		validator: (input: string) => !!input.match(/^[a-zA-Z0-9 ]*$/),
+		validators: [
+			{
+				matcher: (input: string) => !!input.match(/^[a-zA-Z0-9 ]*$/),
+				message: "Not a valid name.",
+			},
+		],
+		validate,
 	},
 	{
 		code: "Bible Chapter",
 		name: "Bible Chapter",
-		validator: (input: string) => !!input.match(/^[a-zA-Z0-9 ]*$/),
+		validators: [
+			{
+				matcher: (input: string) => !!input.match(/^[a-zA-Z0-9 ]*$/),
+				message: "Not a valid name.",
+			},
+		],
+		validate,
 	},
 	{
 		code: "Text",
 		name: "Text",
-		validator: (input: string) => !!input.match(/^[a-zA-Z0-9 ]*$/),
+		validators: [
+			{
+				matcher: (input: string) => !!input.match(/^[a-zA-Z0-9 ]*$/),
+				message: "Not a valid name.",
+			},
+		],
+		validate,
 	},
 	{
 		code: "Bible verse",
 		name: "Bible Verse",
-		validator: (input: string) => !!input.match(/^[a-zA-Z0-9 ]*$/),
+		validators: [
+			{
+				matcher: (input: string) => !!input.match(/^[a-zA-Z0-9 ]*$/),
+				message: "Not a valid name.",
+			},
+		],
+		validate,
 	},
 ];
