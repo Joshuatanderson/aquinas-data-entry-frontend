@@ -44,8 +44,10 @@ const AddOptionalField = ({ addActiveField }: AddOptionalFieldProps) => {
 	};
 
 	const createMenuOptions = () =>
-		optionalFields.map((field) => (
-			<MenuItem value={field.code}>{field.name}</MenuItem>
+		optionalFields.map((field, index) => (
+			<MenuItem value={field.code} key={`${field.code}${index}`}>
+				{field.name}
+			</MenuItem>
 		));
 	return (
 		<Grid container spacing={3} className={classes.cont}>

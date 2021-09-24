@@ -64,6 +64,9 @@ const InputForm = () => {
 	};
 
 	const handleAddActiveField = (field: Field) => {
+		if (activeFields.map((active) => active.code).includes(field.code)) {
+			return;
+		}
 		setActiveFields((prevState) => [...prevState, field]);
 	};
 
