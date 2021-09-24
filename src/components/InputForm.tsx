@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { requiredFields, Validator } from "../data/requiredFields";
 import { theme } from "../theme";
 import InputField from "./InputField";
@@ -22,6 +22,7 @@ export interface FieldValue {
 	code: string;
 	name: string;
 	value: string;
+	error?: true | undefined;
 }
 
 const useStyles = makeStyles({
@@ -35,6 +36,20 @@ const InputForm = () => {
 	const [showErrors, setShowErrors] = useState(false);
 	const [formSubmissionValue, setFormSubmissionValue] =
 		useState<Record<string, FieldValue>>();
+
+	useEffect(() => {
+		if (
+			!(
+				Object.values(formSubmissionValue || {})?.length < requiredFields.length
+			) ||
+			Object.values(formSubmissionValue || {})?.some((val) => val.error)
+		) {
+			setIsSubmitting(false);
+			setShowErrors(true);
+			return;
+		}
+		// submit to server
+	}, [formSubmissionValue]);
 
 	const classes = useStyles();
 

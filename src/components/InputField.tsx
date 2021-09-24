@@ -24,6 +24,7 @@ const InputField = ({
 	showError,
 }: InputFieldProps) => {
 	const [value, setValue] = useState("");
+	const [errorMessage, setErrorMessage] = useState<string | undefined>();
 
 	useEffect(() => {
 		if (!isPendingSubmission) {
@@ -31,6 +32,14 @@ const InputField = ({
 		}
 		handleSubmit();
 	}, [isPendingSubmission]);
+
+	useEffect(() => {
+		if (!showError) {
+			setErrorMessage("");
+			return;
+		}
+		setErrorMessage(field.validate(field.validators)(value));
+	}, [showError]);
 
 	const classes = useStyles({});
 
@@ -48,7 +57,8 @@ const InputField = ({
 			variant="outlined"
 			label={field.name}
 			value={value}
-			error={showError && !!field.validate(field.validators)(value)}
+			error={showError && !!errorMessage}
+			helperText={errorMessage}
 			onChange={(e) => setValue(e.target.value)}
 			className={classes.field}
 		></TextField>
