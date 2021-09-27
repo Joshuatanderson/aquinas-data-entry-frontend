@@ -1,6 +1,8 @@
 import { Button, Container, FormLabel, Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React, { useState, useEffect } from "react";
+import axios from "axios";
+
 import { requiredFields } from "../../data/requiredFields";
 import { Validator } from "../../util/validate";
 import { theme } from "../../theme";
@@ -38,21 +40,40 @@ const InputForm = () => {
 	const [formSubmissionValue, setFormSubmissionValue] =
 		useState<Record<string, FieldValue>>();
 	const [activeFields, setActiveFields] = useState(requiredFields);
+	const [successfullySubmitted, setSuccessfullySubmitted] = useState(false);
 
 	useEffect(() => {
+		if (!formSubmissionValue || !requiredFields) {
+			return;
+		}
 		if (
-			!(
-				Object.values(formSubmissionValue || {})?.length < requiredFields.length
-			) ||
+			!formSubmissionValue ||
+			Object.values(formSubmissionValue || {})?.length < activeFields.length ||
 			Object.values(formSubmissionValue || {})?.some((val) => val.error)
 		) {
+			// console.log(`1: ${!formSubmissionValue} 2: ${}`)
+			console.log(activeFields);
 			setIsSubmitting(false);
 			setShowErrors(true);
 			return;
 		}
-		// submit to server
-		// clear values
-		// show success indicator
+
+		setSuccessfullySubmitted(true);
+		setShowErrors(false);
+		setIsSubmitting(false);
+		console.log(process.env);
+		const submitData = async (formSubmission: Record<string, FieldValue>) => {
+			try {
+				console.log(process.env?.REACT_APP_API_URL);
+				await axios.post(`${process.env?.REACT_APP_API_URL}/item`, {
+					...formSubmission,
+				});
+				setSuccessfullySubmitted(true);
+			} catch (err) {
+				console.error(err);
+			}
+		};
+		submitData(formSubmissionValue);
 	}, [formSubmissionValue]);
 
 	const classes = useStyles();
