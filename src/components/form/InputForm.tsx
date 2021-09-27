@@ -74,6 +74,7 @@ const InputForm = () => {
 			}
 		};
 		submitData(formSubmissionValue);
+		setActiveFields(requiredFields);
 	}, [formSubmissionValue]);
 
 	const classes = useStyles();

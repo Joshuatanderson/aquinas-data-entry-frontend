@@ -31,6 +31,7 @@ const InputField = ({
 			return;
 		}
 		handleSubmit();
+		setValue("");
 	}, [isPendingSubmission]);
 
 	useEffect(() => {
